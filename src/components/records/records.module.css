@@ -1,0 +1,19 @@
+.records :global(.hero) {padding:20px;border-radius:20px;background:var(--hero);color:white;border-left:5px solid var(--section-accent)}
+.records h1 {font-size:clamp(1.5rem,2.3vw,2rem);letter-spacing:-.05em;margin:0 0 8px}
+.records :global(.hero) p {margin:0;color:#e2e4ff}
+.records :global(.tabs) {display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.records button[aria-pressed=true],.records :global(.primary) {background:#493eac;color:white;border-color:#493eac}
+.records form,.records article {background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px}
+.records :global(.fields) {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(158px,100%),1fr));gap:12px;margin-bottom:16px}
+.records label {display:grid;gap:5px;font-weight:600;font-size:13px}
+.records input,.records select {min-width:0;max-width:100%}
+.records :global(.resultHead),.records :global(.cardtop) {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.records :global(.resultHead) {margin:18px 0 10px}.records h2 {margin:0;font-size:1.125rem}
+.records small,.records :global(.id) {font-size:12px;background:var(--soft);border-radius:20px;padding:4px 9px;color:var(--muted)}
+.records :global(.grid) {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));align-items:start;gap:16px}
+.records article {min-width:0;overflow-wrap:anywhere}
+.records :global(.icon) {display:grid;place-items:center;width:34px;height:34px;border-radius:13px;background:var(--section-accent);color:#282147;font-weight:750}
+.records h3 {margin:10px 0 4px;font-size:1rem}.records :global(.meta) {font-size:.8125rem;color:var(--muted)}
+.records :global(.link) {margin-top:12px}
+.openRecord {display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:16px;background:var(--soft);font-weight:600}.openRecord:hover {border-color:#8682ea}
+.statuses { display: flex; flex-wrap: wrap; gap: 5px; }

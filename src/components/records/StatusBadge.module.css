@@ -1,0 +1,9 @@
+.badge { display: inline-flex; align-items: center; gap: .4em; border-radius: 100px; padding: 3px 9px; font-size: .78rem; line-height: 1.4; font-weight: 650; }
+.badge::before { content: ""; width: .5em; height: .5em; flex: none; border-radius: 50%; background: currentColor; }
+.red { --light-ink: #991b1b; --light-bg: #fee2e2; --dark-ink: #ffb5b5; --dark-bg: #47252f; }
+.orange { --light-ink: #92400e; --light-bg: #ffedd5; --dark-ink: #ffcf95; --dark-bg: #463225; }
+.green { --light-ink: #166534; --light-bg: #dcfce7; --dark-ink: #a4e7b9; --dark-bg: #203b32; }
+.blue { --light-ink: #1e40af; --light-bg: #dbeafe; --dark-ink: #b4d2ff; --dark-bg: #243657; }
+.purple { --light-ink: #63329c; --light-bg: #f0e7ff; --dark-ink: #dec1ff; --dark-bg: #37294d; }
+.neutral { --light-ink: #475569; --light-bg: #edf0f5; --dark-ink: #d0d5df; --dark-bg: #333848; }
+:is(.red,.orange,.green,.blue,.purple,.neutral) { color: light-dark(var(--light-ink),var(--dark-ink)); background-color: light-dark(var(--light-bg),var(--dark-bg)); }
