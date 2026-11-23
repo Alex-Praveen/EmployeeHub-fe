@@ -1,12 +1,51 @@
 .landing {
-  position: relative; isolation: isolate; min-height: 100svh; display: grid;
-  place-items: center; padding: 24px; color: #faf9ff;
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #faf9ff;
   background: radial-gradient(ellipse at 75% 55%, #35316d, #0d0d24 72%);
 }
-.backdrop, .threads, .threads canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.backdrop { overflow: hidden; z-index: -1; }
-.intro { text-align: center; padding: 32px 16px; background: radial-gradient(ellipse, #100e2ce8, #100e2c99 48%, transparent 73%); }
-.intro h1 { font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.08; letter-spacing: -.055em; margin: 0; }
-.intro p { margin: 10px 0 24px; font-size: 1rem; color: #e7e5ff; }
-.intro a { display: inline-flex; gap: 14px; align-items: center; border-radius: 999px; padding: 10px 18px; background: #eeeaff; color: #25204f; font-weight: 650; }
-.intro a:hover { background: white; }
+.backdrop,
+.threads,
+.threads canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.backdrop {
+  overflow: hidden;
+  z-index: -1;
+}
+.intro {
+  text-align: center;
+  padding: 32px 16px;
+  background: radial-gradient(ellipse, #100e2ce8, #100e2c99 48%, transparent 73%);
+}
+.intro h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  margin: 0;
+}
+.intro p {
+  margin: 10px 0 24px;
+  font-size: 1rem;
+  color: #e7e5ff;
+}
+.intro a {
+  display: inline-flex;
+  gap: 14px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 10px 18px;
+  background: #eeeaff;
+  color: #25204f;
+  font-weight: 650;
+}
+.intro a:hover {
+  background: white;
+}

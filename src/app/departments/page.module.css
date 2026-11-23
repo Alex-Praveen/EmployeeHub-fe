@@ -1,8 +1,31 @@
-.workspace { --section-accent: #beb5ff; }
-.actions { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-.form { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 12px 0; padding: 14px; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; }
-.form label { display: grid; gap: 4px; min-width: 0; font-size: .8125rem; }
-.form select { max-width: 100%; }
+.workspace {
+  --section-accent: #beb5ff;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 12px;
+}
+.form label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+.form select {
+  max-width: 100%;
+}
 .transferError {
   flex-basis: 100%;
   display: grid;

@@ -14,11 +14,19 @@ export default function DepartmentSummary() {
     const controller = new AbortController();
     async function readDirectory() {
       const rows = await listDepartments(controller.signal);
-      const locations = new Set(rows.map(row => row.location?.trim().toLowerCase()).filter(Boolean));
-      const latest = rows.reduce<Department | null>((recent, row) =>
-        !recent || row.createdAt > recent.createdAt ? row : recent, null);
+      const locations = new Set(
+        rows.map((row) => row.location?.trim().toLowerCase()).filter(Boolean),
+      );
+      const latest = rows.reduce<Department | null>(
+        (recent, row) => (!recent || row.createdAt > recent.createdAt ? row : recent),
+        null,
+      );
       if (!controller.signal.aborted) {
-        setSummary({ departments: rows.length, locations: locations.size, latest: latest?.departmentName ?? "None" });
+        setSummary({
+          departments: rows.length,
+          locations: locations.size,
+          latest: latest?.departmentName ?? "None",
+        });
       }
     }
     readDirectory().catch(() => {
@@ -28,11 +36,20 @@ export default function DepartmentSummary() {
   }, []);
 
   if (failed) return <p className={styles.notice}>Department metrics are unavailable.</p>;
-  return <dl className={styles.metrics} aria-label="Department overview" aria-busy={!summary}>
-    <div><dt>Departments</dt><dd>{summary?.departments ?? "…"}</dd></div>
-    <div><dt>Department locations</dt><dd>{summary?.locations ?? "…"}</dd></div>
-    <div><dt>Newest department</dt><dd>{summary?.latest ?? "…"}</dd></div>
-  </dl>;
+  return (
+    <dl className={styles.metrics} aria-label="Department overview" aria-busy={!summary}>
+      <div>
+        <dt>Departments</dt>
+        <dd>{summary?.departments ?? "…"}</dd>
+      </div>
+      <div>
+        <dt>Department locations</dt>
+        <dd>{summary?.locations ?? "…"}</dd>
+      </div>
+      <div>
+        <dt>Newest department</dt>
+        <dd>{summary?.latest ?? "…"}</dd>
+      </div>
+    </dl>
+  );
 }
-
-

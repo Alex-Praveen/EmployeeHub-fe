@@ -7,17 +7,78 @@
   color: var(--ink);
   box-shadow: 0 28px 100px #10103466;
 }
-.dialog::backdrop { background: #10102b99; backdrop-filter: blur(6px); }
-.panel { display: flex; flex-direction: column; max-height: min(82dvh, 840px); }
-.header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 20px; color: white; background: var(--hero); }
-.header p { margin: 0 0 8px; color: #e6e4ff; font-size: 13px; }
-.header h2 { overflow-wrap: anywhere; }
-.header button { background: #ffffff19; border-color: #ffffff70; color: white; font-size: 22px; line-height: 1; }
-.body { overflow: auto; overscroll-behavior: contain; padding: clamp(12px, 2vw, 20px); }
-.body table { width: 100%; table-layout: fixed; border-spacing: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.body table + table { margin-top: 14px; }
-.body caption { text-align: left; font-weight: 650; margin-bottom: 8px; overflow-wrap: anywhere; }
-.body th,.body td { text-align: left; padding: 8px 10px; vertical-align: top; overflow-wrap: anywhere; }
-.body th { width: 38%; font-size: 13px; color: var(--muted); background: var(--soft); }
-.body td { white-space: pre-wrap; font-size: .875rem; }
-.body tr + tr > * { border-top: 1px solid var(--line); }
+.dialog::backdrop {
+  background: #10102b99;
+  backdrop-filter: blur(6px);
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-height: min(82dvh, 840px);
+}
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  color: white;
+  background: var(--hero);
+}
+.header p {
+  margin: 0 0 8px;
+  color: #e6e4ff;
+  font-size: 13px;
+}
+.header h2 {
+  overflow-wrap: anywhere;
+}
+.header button {
+  background: #ffffff19;
+  border-color: #ffffff70;
+  color: white;
+  font-size: 22px;
+  line-height: 1;
+}
+.body {
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(12px, 2vw, 20px);
+}
+.body table {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.body table + table {
+  margin-top: 14px;
+}
+.body caption {
+  text-align: left;
+  font-weight: 650;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+.body th,
+.body td {
+  text-align: left;
+  padding: 8px 10px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.body th {
+  width: 38%;
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--soft);
+}
+.body td {
+  white-space: pre-wrap;
+  font-size: 0.875rem;
+}
+.body tr + tr > * {
+  border-top: 1px solid var(--line);
+}
