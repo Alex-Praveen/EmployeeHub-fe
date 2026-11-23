@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import TransferForm from "./TransferForm";
 import TeamRoster from "@/components/team/TeamRoster";
 
 import type { Member } from "@/components/team/EmployeeProfile";
 
 export default function DepartmentTeam({ departmentId }: { departmentId: string }) {
 
+  const [transfer, setTransfer] = useState(false);
+  const [notice, setNotice] = useState("");
   const [members, setMembers] = useState<Member[] | null>(null);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -31,6 +34,16 @@ export default function DepartmentTeam({ departmentId }: { departmentId: string 
     setAttempt(attempt + 1);
   }}>Retry</button></p>;
   if (!members) return <p role="status">Loading team members…</p>;
-  if (!members.length) return <p>No team members are assigned to this department.</p>;
-  return <TeamRoster members={members} />;
+  return <>
+    {notice && <p role="status">{notice}</p>}
+    {members.length ? <>
+      <TeamRoster members={members} />
+      <button aria-expanded={transfer} onClick={() => setTransfer(!transfer)}>{transfer ? "Close transfer form" : "Transfer employee"}</button>
+      {transfer && <TransferForm members={members} source={departmentId} onTransferred={(id, message) => {
+        setMembers(current => current?.filter(member => member.employeeId !== id) ?? null);
+        setNotice(message);
+        setTransfer(false);
+      }} />}
+    </> : <p>No team members are assigned to this department.</p>}
+  </>;
 }

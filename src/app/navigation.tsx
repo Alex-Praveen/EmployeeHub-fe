@@ -6,6 +6,7 @@ export const modules = areas.map((area) => ({
 }));
 
 const paths: Record<string, string> = {
+  employees: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M4 21a8 7 0 0 1 16 0",
   overview: "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z",
   departments: "M3 21h18 M5 21V5l10-2v18 M15 10h4v11 M8 8h1 M11 7h1 M8 12h1 M11 11h1 M8 16h1 M11 15h1",
   projects: "M3 7h7l2 2h9v11H3z M3 7V4h7l2 2h7v3",
@@ -17,3 +18,4 @@ const paths: Record<string, string> = {
 export function Icon({ name }: { name: string }) {
   return <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"><path d={paths[name]} /></svg>;
 }
+

@@ -1,1 +1,13 @@
-.workspace { --section-accent: #81c9ff; }
+.workspace { --section-accent:#81c9ff; }
+.hero { background:var(--hero); color:white; padding:20px 24px; border-radius:18px; border-inline-start:4px solid #aeb9ff }
+.hero h1 { margin:0; font-size:1.75rem }.hero p { margin:4px 0 0 }
+.layout { display:grid; grid-template-columns:minmax(230px, .75fr) minmax(0,1.65fr); align-items:start;gap:14px;margin:16px 0 }
+.panel { padding:18px; background:var(--surface); border:1px solid var(--line);border-radius:16px;min-width:0 }
+.panel header,.controls {display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:12px}
+.panel h2 {font-size:1rem;margin:0}.panel small,.panel p {color:var(--muted)}
+.controls input {min-width:0;width:100%}.grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+.grid button {position:relative;padding:8px 0;border-color:transparent;background:var(--soft);font-size:.8125rem}
+.grid button[aria-pressed=true] {background:linear-gradient(130deg,#453aab,#71358b);color:white}
+.grid button[data-records=true]::after {content:"";position:absolute;bottom:2px;left:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:currentColor}
+.scroll {overflow:auto}.scroll table {width:100%;border-collapse:collapse;font-size:.8125rem}.scroll th,.scroll td {padding:9px 6px;text-align:left;border-bottom:1px solid var(--line)}.scroll thead {background:var(--soft)}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.grid{max-width:440px}}

@@ -1,0 +1,7 @@
+.hero {background:var(--hero);color:white;border-radius:18px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hero h1 {margin:0;font-size:1.75rem}.hero p {margin:2px 0 0}.page h2 {font-size:1rem}
+.filters,.form {display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.filters input{flex:1;min-width:160px}
+.grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:12px}
+.grid article,.form {background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.grid h2{margin:12px 0 4px}.grid p{margin:0 0 8px;color:var(--muted)}.grid a{overflow-wrap:anywhere;text-decoration:underline}
+.grid footer{display:flex;gap:8px;margin-top:12px}.form label{display:grid;gap:4px;font-size:.8125rem}.form h2,.form>div {width:100%;margin:0}

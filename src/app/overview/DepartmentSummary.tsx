@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
-type Department = { departmentName: string; location: string | null; createdAt: string };
+import { listDepartments, type Department } from "../departments/api";
 type Summary = { departments: number; locations: number; latest: string };
 
 export default function DepartmentSummary() {
@@ -13,12 +13,7 @@ export default function DepartmentSummary() {
   useEffect(() => {
     const controller = new AbortController();
     async function readDirectory() {
-      const response = await fetch("/api/departments/all-departments", {
-        signal: controller.signal,
-        cache: "no-store",
-      });
-      if (!response.ok) throw new Error("Directory unavailable");
-      const rows: Department[] = await response.json();
+      const rows = await listDepartments(controller.signal);
       const locations = new Set(rows.map(row => row.location?.trim().toLowerCase()).filter(Boolean));
       const latest = rows.reduce<Department | null>((recent, row) =>
         !recent || row.createdAt > recent.createdAt ? row : recent, null);
@@ -39,3 +34,5 @@ export default function DepartmentSummary() {
     <div><dt>Newest department</dt><dd>{summary?.latest ?? "…"}</dd></div>
   </dl>;
 }
+
+

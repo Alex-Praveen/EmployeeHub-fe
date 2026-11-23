@@ -6,6 +6,7 @@ const tones: Record<string, string> = {
   APPROVED: "green", PRESENT: "green", ACTIVE: "green", COMPLETED: "green",
   REMOTE: "blue", IN_PROGRESS: "blue", PLANNED: "blue",
   HALF_DAY: "purple", ON_LEAVE: "purple",
+  TERMINATED: "red",
 };
 
 export function isStatusField(field: string) {
