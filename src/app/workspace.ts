@@ -148,3 +148,9 @@ export function isIdentifier(key: string) {
     /_(id|uuid)s?$/i.test(key)
   );
 }
+
+export function areaForRoute(route: string): Area {
+  const area = areas.find(({ operations }) => operations[0].path.split("/")[0] === route);
+  if (!area) throw new Error(`Unknown workspace route: ${route}`);
+  return area;
+}

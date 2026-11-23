@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/records/StatusBadge";
 import Records from "@/components/records/Records";
-import { areas } from "../workspace";
+import { areaForRoute } from "../workspace";
 import styles from "./page.module.css";
 
 type Entry = {
@@ -180,7 +180,7 @@ export default function Page() {
       <button aria-expanded={advanced} onClick={() => setAdvanced(!advanced)}>
         Advanced attendance search
       </button>
-      {advanced && <Records area={areas[2]} />}
+      {advanced && <Records area={areaForRoute("attendance")} />}
     </div>
   );
 }

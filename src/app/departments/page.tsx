@@ -1,7 +1,7 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import Records from "@/components/records/Records";
-import { areas } from "../workspace";
+import { areaForRoute } from "../workspace";
 import { postDepartment } from "./api";
 import styles from "./page.module.css";
 
@@ -63,7 +63,7 @@ export default function Page() {
         </form>
       )}
       {message && <p role="status">{message}</p>}
-      <Records key={version} area={areas[0]} />
+      <Records key={version} area={areaForRoute("departments")} />
     </section>
   );
 }
