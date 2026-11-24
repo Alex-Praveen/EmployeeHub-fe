@@ -1,3 +1,99 @@
-.workspace {
-  --section-accent: #f0aeea;
+.page header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--hero);
+  color: white;
+  border-radius: 16px;
+  padding: 20px;
+}
+.page h1,
+.page header p {
+  margin: 0;
+}
+.page h2,
+.dialog h2 {
+  font-size: 1.05rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(275px, 100%), 1fr));
+  gap: 12px;
+}
+.grid article,
+.filters,
+.dialog {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+.grid h2 {
+  margin: 12px 0 4px;
+}
+.grid p {
+  color: var(--muted);
+}
+.filters {
+  margin: 16px 0;
+}
+.filters summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+.filters form {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(175px, 100%), 1fr));
+  gap: 10px;
+}
+.page label,
+.dialog label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+.page select {
+  max-width: 100%;
+}
+.actions {
+  display: flex;
+  gap: 6px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+.dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-height: 85dvh;
+}
+.dialog fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 12px;
+}
+.dialog textarea {
+  resize: vertical;
+  min-height: 60px;
+  background: var(--soft);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  padding: 8px;
+}
+.dialog::backdrop {
+  background: #12122899;
+  backdrop-filter: blur(4px);
+}
+.primary {
+  background: #5144ae;
+  color: white;
+}
+.dialog [role="alert"] {
+  color: light-dark(#99202a, #ffb6bc);
 }

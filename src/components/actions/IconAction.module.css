@@ -1,0 +1,51 @@
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 7px;
+  border-radius: 12px;
+  color: var(--ink);
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+.action:enabled:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--soft) 85%, #9385ff);
+  border-color: #9286ee;
+}
+.action[data-action="approve"] {
+  color: light-dark(#166534, #9ee6ad);
+}
+.action:is([data-action="reject"], [data-action="delete"], [data-action="terminate"]) {
+  color: light-dark(#992330, #ffacb7);
+}
+.action:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .action,
+  .action svg {
+    transition:
+      transform 150ms ease,
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+  .action:enabled:is(:hover, :focus-visible) svg {
+    transform: translateY(-2px) scale(1.09);
+  }
+  .action[data-action="reset"]:enabled:hover svg {
+    transform: rotate(-30deg);
+  }
+  .action:enabled:active {
+    transform: scale(0.94);
+  }
+}
+@media (hover: none) {
+  .action {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

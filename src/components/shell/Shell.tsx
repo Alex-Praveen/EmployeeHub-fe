@@ -1,4 +1,5 @@
 "use client";
+import IconAction from "@/components/actions/IconAction";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useSyncExternalStore } from "react";
@@ -67,14 +68,12 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <button
+        <IconAction
+          icon="sidebar"
+          label={side ? "Undock sidebar" : "Dock sidebar"}
           onClick={dockSide}
           aria-pressed={side}
-          aria-label={side ? "Undock sidebar" : "Dock sidebar"}
-          title={side ? "Undock sidebar" : "Dock sidebar"}
-        >
-          ◧ <span>{side ? "Undock sidebar" : "Dock sidebar"}</span>
-        </button>
+        />
       </aside>
       <div className={styles.content}>
         <header className={styles.bar}>
@@ -82,12 +81,18 @@ export default function Shell({ children }: { children: React.ReactNode }) {
             Workspace　/　<strong>{current}</strong>
           </span>
           <div>
-            <button onClick={dockTop} aria-pressed={top}>
-              {top ? "Undock navbar" : "Dock navbar"}
-            </button>
-            <button onClick={theme} aria-pressed={dark}>
-              {dark ? "☀ Light" : "☾ Dark"}
-            </button>
+            <IconAction
+              icon="navbar"
+              label={top ? "Undock navbar" : "Dock navbar"}
+              onClick={dockTop}
+              aria-pressed={top}
+            />
+            <IconAction
+              icon={dark ? "light" : "dark"}
+              label={dark ? "Switch to light mode" : "Switch to dark mode"}
+              onClick={theme}
+              aria-pressed={dark}
+            />
           </div>
         </header>
         <main className={styles.main}>{children}</main>

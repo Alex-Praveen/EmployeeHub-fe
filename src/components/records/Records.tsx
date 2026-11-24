@@ -1,4 +1,5 @@
 "use client";
+import IconAction from "@/components/actions/IconAction";
 import styles from "./records.module.css";
 import { useState, useEffect, useRef } from "react";
 import { fetchRecords } from "./fetchRecords";
@@ -126,7 +127,13 @@ export default function Records({ area }: { area: Area }) {
               </label>
             ))}
           </div>
-          <button className="primary">Search records</button>
+          <IconAction
+            icon="search"
+            type="submit"
+            label="Search records"
+            showLabel
+            className="primary"
+          />
         </form>
       )}
       <section className="results">
@@ -200,21 +207,23 @@ export default function Records({ area }: { area: Area }) {
                   <div className="meta">
                     {String(row.location || row.reviewDate || row.currency || "")}
                   </div>
-                  <button
-                    className={styles.openRecord}
+                  <IconAction
+                    icon="details"
+                    label={
+                      area.name === "Departments"
+                        ? "View department team"
+                        : "Record details"
+                    }
+                    showLabel
                     aria-haspopup="dialog"
                     aria-label={
-                      area.name === "Departments"
-                        ? `View team for ${title}`
-                        : `Record details for ${title}`
+                      (area.name === "Departments"
+                        ? "View team for "
+                        : "Record details for ") + title
                     }
+                    className={styles.openRecord}
                     onClick={() => setSelected({ title, row })}
-                  >
-                    {area.name === "Departments"
-                      ? "View department team"
-                      : "Record details"}{" "}
-                    <span aria-hidden="true">{"\u2197"}</span>
-                  </button>
+                  />
                 </article>
               );
             })}

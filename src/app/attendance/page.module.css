@@ -101,3 +101,101 @@
     max-width: 440px;
   }
 }
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+.dialog {
+  width: min(440px, calc(100vw - 24px));
+  max-height: 85dvh;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.dialog::backdrop {
+  background: #12122899;
+  backdrop-filter: blur(4px);
+}
+.dialog fieldset {
+  display: grid;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.dialog label {
+  display: grid;
+  gap: 4px;
+}
+.dialog .picker {
+  max-height: 160px;
+  overflow: auto;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 8px;
+}
+.picker label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dialog select {
+  max-width: 100%;
+}
+.dialog [role="alert"] {
+  color: light-dark(#99202a, #ffb6bc);
+}
+.dialog .bulkList {
+  display: grid;
+  max-height: 34dvh;
+  overflow: auto;
+  gap: 6px;
+}
+.dialog .bulkList label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.bulkList small {
+  display: block;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.dialog .adjustments {
+  margin: 3px 4px 10px;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--soft);
+}
+.adjustments summary {
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.dialog .adjustments fieldset {
+  margin-top: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.dialog .adjustments label {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 0;
+}
+.adjustments input {
+  width: 100%;
+  padding: 0;
+  accent-color: #8977ed;
+}
+.dialog:has(.bulkList) {
+  width: min(580px, calc(100vw - 24px));
+}
+.dialog .bulkList {
+  max-height: 48dvh;
+}

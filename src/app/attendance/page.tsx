@@ -5,15 +5,8 @@ import Records from "@/components/records/Records";
 import { areaForRoute } from "../workspace";
 import styles from "./page.module.css";
 
-type Entry = {
-  attendanceId: number;
-  attendanceDate: string;
-  status: string;
-  checkIn?: string;
-  checkOut?: string;
-  employee: { firstName: string; lastName: string; jobTitle?: { titleName: string } };
-};
-
+import AttendanceEditor, { type Entry, type Editor } from "./AttendanceEditor";
+import IconAction from "@/components/actions/IconAction";
 function dateKey(date: Date) {
   return [
     date.getFullYear(),
@@ -21,7 +14,9 @@ function dateKey(date: Date) {
     String(date.getDate()).padStart(2, "0"),
   ].join("-");
 }
-function Calendar({ today }: { today: string }) {
+function Calendar({ today, onChange }: { today: string; onChange: () => void }) {
+  const [editor, setEditor] = useState<Editor | null>(null);
+  const [notice, setNotice] = useState("");
   const [day, select] = useState(today);
   const [attempt, retry] = useState(0);
   const [result, setResult] = useState<{
@@ -118,6 +113,23 @@ function Calendar({ today }: { today: string }) {
           </h2>
           {current && !current.failed && <small>{entries.length} records</small>}
         </header>
+        {current && !current.failed && (
+          <div className={styles.actions}>
+            <IconAction
+              icon="add"
+              label="Add attendance"
+              showLabel
+              onClick={() => setEditor({ action: "create" })}
+            />
+            <IconAction
+              icon="group"
+              label="Add group attendance"
+              showLabel
+              onClick={() => setEditor({ action: "create-bulk" })}
+            />
+          </div>
+        )}
+        {notice && <p role="status">{notice}</p>}
         {!current ? (
           <p>Loading attendance…</p>
         ) : current.failed ? (
@@ -132,13 +144,18 @@ function Calendar({ today }: { today: string }) {
             <table>
               <thead>
                 <tr>
-                  {["Employee", "Job title", "Check-in", "Check-out", "Status"].map(
-                    (h) => (
-                      <th key={h} scope="col">
-                        {h}
-                      </th>
-                    ),
-                  )}
+                  {[
+                    "Employee",
+                    "Job title",
+                    "Check-in",
+                    "Check-out",
+                    "Status",
+                    "Actions",
+                  ].map((h) => (
+                    <th key={h} scope="col">
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -153,6 +170,20 @@ function Calendar({ today }: { today: string }) {
                     <td>
                       <StatusBadge value={row.status} />
                     </td>
+                    <td>
+                      <div className={styles.actions}>
+                        <IconAction
+                          icon="edit"
+                          label={`Edit attendance for ${row.employee.firstName} ${row.employee.lastName}`}
+                          onClick={() => setEditor({ action: "update", record: row })}
+                        />
+                        <IconAction
+                          icon="delete"
+                          label={`Delete attendance for ${row.employee.firstName} ${row.employee.lastName}`}
+                          onClick={() => setEditor({ action: "delete", record: row })}
+                        />
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -160,11 +191,26 @@ function Calendar({ today }: { today: string }) {
           </div>
         )}
       </section>
+      {editor && (
+        <AttendanceEditor
+          editor={editor}
+          entries={entries}
+          day={day}
+          onClose={() => setEditor(null)}
+          onSaved={(message) => {
+            setEditor(null);
+            setNotice(message);
+            retry((v) => v + 1);
+            onChange();
+          }}
+        />
+      )}
     </div>
   );
 }
 export default function Page() {
   const [today, setToday] = useState("");
+  const [revision, setRevision] = useState(0);
   const [advanced, setAdvanced] = useState(false);
   useEffect(() => {
     const timer = window.setTimeout(() => setToday(dateKey(new Date())), 0);
@@ -176,11 +222,11 @@ export default function Page() {
         <h1>Attendance</h1>
         <p>Select a date to view the daily register.</p>
       </div>
-      {today && <Calendar today={today} />}
+      {today && <Calendar today={today} onChange={() => setRevision((v) => v + 1)} />}
       <button aria-expanded={advanced} onClick={() => setAdvanced(!advanced)}>
         Advanced attendance search
       </button>
-      {advanced && <Records area={areaForRoute("attendance")} />}
+      {advanced && <Records key={revision} area={areaForRoute("attendance")} />}
     </div>
   );
 }

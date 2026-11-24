@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
+import IconAction from "@/components/actions/IconAction";
 import StatusBadge from "@/components/records/StatusBadge";
 import { choices } from "../workspace";
 import { listDepartments, type Department } from "../departments/api";
@@ -302,19 +303,19 @@ export default function Employees() {
               </p>
               <a href={"mailto:" + person.email}>{person.email}</a>
               <footer>
-                <button
+                <IconAction
+                  icon="edit"
+                  label={`Edit ${nameOf(person)}`}
                   disabled={busy}
                   onClick={() => open({ action: "update", employee: person })}
-                >
-                  Edit
-                </button>
+                />
                 {person.employmentStatus !== "TERMINATED" && (
-                  <button
+                  <IconAction
+                    icon="terminate"
+                    label={`Terminate ${nameOf(person)}`}
                     disabled={busy}
                     onClick={() => open({ action: "terminate", employee: person })}
-                  >
-                    Terminate
-                  </button>
+                  />
                 )}
               </footer>
             </article>
