@@ -156,7 +156,6 @@ export default function LeaveEditor({
                         : "approve"
               }
               label={busy ? "Saving…" : editing ? "Save request" : title}
-              showLabel
               className={styles.primary}
             />
           </div>

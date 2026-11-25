@@ -1,3 +1,4 @@
+import { apiRequest } from "@/data/apiRequest";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import IconAction from "@/components/actions/IconAction";
 import { statusLabel } from "@/components/records/StatusBadge";
@@ -63,7 +64,7 @@ export default function AttendanceEditor({
     if (!create) return;
     const controller = new AbortController();
     async function load() {
-      const response = await fetch("/api/employees/search", {
+      const response = await apiRequest("/api/employees/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: "{}",
@@ -120,7 +121,7 @@ export default function AttendanceEditor({
     setError("");
     setBusy(true);
     try {
-      const response = await fetch("/api/attendance/" + editor.action, {
+      const response = await apiRequest("/api/attendance/" + editor.action, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -304,7 +305,6 @@ export default function AttendanceEditor({
                     ? "Confirm deletion"
                     : "Save attendance"
               }
-              showLabel
               type="submit"
               disabled={create && !available?.length}
             />

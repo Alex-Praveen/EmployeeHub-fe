@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px 24px;
+  border-radius: 18px;
+  background: var(--hero);
+  color: white;
+}
+.header h1 {
+  font-size: clamp(1.5rem, 2.3vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+.header p {
+  margin: 4px 0 0;
+  color: #e4e6ff;
+}
+.actions {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}

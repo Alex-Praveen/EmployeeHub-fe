@@ -1,4 +1,6 @@
 "use client";
+import { apiRequest } from "@/data/apiRequest";
+import PageHeader from "@/components/actions/PageHeader";
 import { useEffect, useState, type FormEvent } from "react";
 import IconAction from "@/components/actions/IconAction";
 import StatusBadge from "@/components/records/StatusBadge";
@@ -28,7 +30,7 @@ type Editor =
 const nameOf = (person: Employee) => person.firstName + " " + person.lastName;
 
 async function request(action: string, body: object, signal?: AbortSignal) {
-  const response = await fetch("/api/employees/" + action, {
+  const response = await apiRequest("/api/employees/" + action, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -136,28 +138,27 @@ export default function Employees() {
   }
   return (
     <section className={styles.page}>
-      <header className={styles.hero}>
-        <div>
-          <h1>Employees</h1>
-          <p>People directory</p>
-        </div>
-        <button disabled={busy || loading} onClick={() => open({ action: "create" })}>
-          New employee
-        </button>
-      </header>
+      <PageHeader title="Employees" subtitle="People directory">
+        <IconAction
+          icon="add"
+          label="New employee"
+          disabled={busy || loading}
+          onClick={() => open({ action: "create" })}
+        />
+      </PageHeader>
       {error && (
         <p role="alert">
           {error}{" "}
           {!editor && (
-            <button
+            <IconAction
+              icon="reset"
+              label="Retry"
               onClick={() => {
                 setError("");
                 setLoading(true);
                 retry(attempt + 1);
               }}
-            >
-              Retry
-            </button>
+            />
           )}
         </p>
       )}
@@ -260,12 +261,21 @@ export default function Employees() {
             </>
           )}
           <div>
-            <button disabled={busy}>
-              {editor.action === "terminate" ? "Confirm termination" : "Save employee"}
-            </button>{" "}
-            <button type="button" disabled={busy} onClick={() => open(null)}>
-              Cancel
-            </button>
+            <IconAction
+              icon={editor.action === "terminate" ? "terminate" : "save"}
+              label={
+                editor.action === "terminate" ? "Confirm termination" : "Save employee"
+              }
+              type="submit"
+              disabled={busy}
+            />{" "}
+            <IconAction
+              icon="back"
+              label="Cancel"
+              type="button"
+              disabled={busy}
+              onClick={() => open(null)}
+            />
           </div>
         </form>
       )}

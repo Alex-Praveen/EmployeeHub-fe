@@ -1,3 +1,5 @@
+import { apiRequest } from "@/data/apiRequest";
+import IconAction from "@/components/actions/IconAction";
 import { useState, useEffect } from "react";
 import StatusBadge from "@/components/records/StatusBadge";
 import TeamRoster from "@/components/team/TeamRoster";
@@ -25,10 +27,13 @@ export default function ProjectDetails({ record }: { record: ProjectRecord }) {
     if (included) return;
     const controller = new AbortController();
     async function readRoster() {
-      const response = await fetch("/api/projects/" + project.projectId + "/employees", {
-        signal: controller.signal,
-        cache: "no-store",
-      });
+      const response = await apiRequest(
+        "/api/projects/" + project.projectId + "/employees",
+        {
+          signal: controller.signal,
+          cache: "no-store",
+        },
+      );
       if (!response.ok) throw new Error("Team unavailable");
       const result = await response.json();
       if (!Array.isArray(result.employees)) throw new Error("Missing team");
@@ -77,14 +82,14 @@ export default function ProjectDetails({ record }: { record: ProjectRecord }) {
       {failed ? (
         <p role="alert">
           Team members could not be loaded.{" "}
-          <button
+          <IconAction
+            icon="reset"
+            label="Retry"
             onClick={() => {
               setFailed(false);
               setAttempt((value) => value + 1);
             }}
-          >
-            Retry
-          </button>
+          />
         </p>
       ) : !assignments ? (
         <p role="status">Loading team members.</p>

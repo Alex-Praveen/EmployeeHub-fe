@@ -1,5 +1,7 @@
 "use client";
+import PageHeader from "@/components/actions/PageHeader";
 import { useState, type FormEvent } from "react";
+import IconAction from "@/components/actions/IconAction";
 import Records from "@/components/records/Records";
 import { areaForRoute } from "../workspace";
 import { postDepartment } from "./api";
@@ -37,18 +39,18 @@ export default function Page() {
   }
   return (
     <section className={styles.workspace}>
-      <div className={styles.actions}>
-        <button
+      <PageHeader title="Departments" subtitle={areaForRoute("departments").subtitle}>
+        <IconAction
+          icon={open ? "back" : "add"}
+          label={open ? "Cancel" : "New department"}
           disabled={busy}
           aria-expanded={open}
           onClick={() => {
             setOpen(!open);
             setMessage("");
           }}
-        >
-          {open ? "Cancel" : "New department"}
-        </button>
-      </div>
+        />
+      </PageHeader>
       {open && (
         <form className={styles.form} onSubmit={create}>
           <label>
@@ -59,11 +61,16 @@ export default function Page() {
             Location (optional)
             <input name="location" maxLength={100} />
           </label>
-          <button disabled={busy}>{busy ? "Creating…" : "Create department"}</button>
+          <IconAction
+            icon="save"
+            label={busy ? "Creating…" : "Create department"}
+            type="submit"
+            disabled={busy}
+          />
         </form>
       )}
       {message && <p role="status">{message}</p>}
-      <Records key={version} area={areaForRoute("departments")} />
+      <Records showHeader={false} key={version} area={areaForRoute("departments")} />
     </section>
   );
 }

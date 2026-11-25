@@ -14,7 +14,13 @@ import {
 
 import StatusBadge, { isStatusField, statusClass, statusLabel } from "./StatusBadge";
 import RecordDialog, { type Row, type Selection } from "./RecordDialog";
-export default function Records({ area }: { area: Area }) {
+export default function Records({
+  area,
+  showHeader = true,
+}: {
+  area: Area;
+  showHeader?: boolean;
+}) {
   const [selected, setSelected] = useState<Selection | null>(null);
   const [mode, setMode] = useState(0);
   const [values, setValues] = useState<Record<string, string>>({});
@@ -69,12 +75,14 @@ export default function Records({ area }: { area: Area }) {
   );
   return (
     <div className={styles.records}>
-      <section className="hero">
-        <div>
-          <h1>{area.name}</h1>
-          <p>{area.subtitle}</p>
-        </div>
-      </section>
+      {showHeader && (
+        <section className="hero">
+          <div>
+            <h1>{area.name}</h1>
+            <p>{area.subtitle}</p>
+          </div>
+        </section>
+      )}
       <div className="tabs">
         {area.operations.map((o, i) =>
           o.path.includes("{") && o.fields.some(isIdentifier) ? null : (
@@ -131,7 +139,6 @@ export default function Records({ area }: { area: Area }) {
             icon="search"
             type="submit"
             label="Search records"
-            showLabel
             className="primary"
           />
         </form>
@@ -153,7 +160,8 @@ export default function Records({ area }: { area: Area }) {
         </div>
         {state === "error" ? (
           <p role="alert">
-            {error} <button onClick={() => search(op, values)}>Retry</button>
+            {error}{" "}
+            <IconAction icon="reset" label="Retry" onClick={() => search(op, values)} />
           </p>
         ) : state === "idle" ? (
           <p>Enter the lookup value above to see records.</p>
@@ -214,7 +222,6 @@ export default function Records({ area }: { area: Area }) {
                         ? "View department team"
                         : "Record details"
                     }
-                    showLabel
                     aria-haspopup="dialog"
                     aria-label={
                       (area.name === "Departments"

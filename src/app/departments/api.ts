@@ -1,3 +1,5 @@
+import { apiRequest } from "@/data/apiRequest";
+
 export type Department = {
   departmentId: number;
   departmentName: string;
@@ -19,7 +21,7 @@ export async function postDepartment(
   body: object,
   signal?: AbortSignal,
 ) {
-  const response = await fetch("/api/departments/" + action, {
+  const response = await apiRequest("/api/departments/" + action, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

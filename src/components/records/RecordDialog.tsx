@@ -1,3 +1,4 @@
+import IconAction from "@/components/actions/IconAction";
 import { useEffect, useRef } from "react";
 import ProjectDetails, { type ProjectRecord } from "@/app/projects/ProjectDetails";
 import DepartmentTeam from "@/app/departments/DepartmentTeam";
@@ -76,9 +77,13 @@ export default function RecordDialog({
               <span>{String(record.row.location)}</span>
             )}
           </div>
-          <button type="button" onClick={onClose} aria-label="Close record details">
-            &times;
-          </button>
+          <IconAction
+            icon="close"
+            label="Close record details"
+            type="button"
+            onClick={onClose}
+            aria-label="Close record details"
+          />
         </header>
         <div
           className={styles.body}

@@ -49,3 +49,35 @@
     min-height: 44px;
   }
 }
+.action {
+  position: relative;
+}
+.action::after {
+  content: attr(data-label);
+  position: absolute;
+  inset-block-end: calc(100% + 5px);
+  inset-inline-end: 0;
+  z-index: 12;
+  width: max-content;
+  max-width: min(220px, 70vw);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #26233f;
+  color: #fff;
+  font:
+    500 0.75rem/1.4 "Segoe UI",
+    sans-serif;
+  pointer-events: none;
+  visibility: hidden;
+}
+.action:is(:hover, :focus-visible)::after {
+  visibility: visible;
+}
+aside .action::after {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+header .action::after {
+  inset-block-end: auto;
+  inset-block-start: calc(100% + 5px);
+}

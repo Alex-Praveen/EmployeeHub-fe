@@ -1,5 +1,8 @@
 import type { ButtonHTMLAttributes } from "react";
 import {
+  CalendarDays,
+  ArrowRight,
+  ArrowRightLeft,
   UsersRound,
   Eye,
   Pencil,
@@ -21,6 +24,10 @@ import {
 import styles from "./IconAction.module.css";
 
 const icons = {
+  today: CalendarDays,
+  next: ArrowRight,
+  transfer: ArrowRightLeft,
+  close: X,
   group: UsersRound,
   details: Eye,
   edit: Pencil,
@@ -43,13 +50,11 @@ const icons = {
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
   icon: keyof typeof icons;
   label: string;
-  showLabel?: boolean;
 };
 
 export default function IconAction({
   icon,
   label,
-  showLabel = false,
   className = "",
   type = "button",
   ...props
@@ -58,6 +63,7 @@ export default function IconAction({
   return (
     <button
       type={type}
+      data-label={label}
       title={label}
       aria-label={label}
       className={styles.action + " " + className}
@@ -65,7 +71,6 @@ export default function IconAction({
       {...props}
     >
       <Glyph size={17} strokeWidth={1.8} aria-hidden="true" />
-      {showLabel && <span>{label}</span>}
     </button>
   );
 }

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 192.168.20.127",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -11,6 +11,7 @@
     "format:check": "prettier --check src next.config.ts eslint.config.mjs tsconfig.json package.json"
   },
   "dependencies": {
+    "@tanstack/query-core": "^5.108.4",
     "lucide-react": "^1.79.0",
     "next": "16.4.6",
     "react": "19.3.0",

@@ -1,3 +1,4 @@
+import IconAction from "@/components/actions/IconAction";
 import { useEffect, useState, type FormEvent } from "react";
 import { employeeName, type Member } from "@/components/team/EmployeeProfile";
 import {
@@ -92,9 +93,12 @@ export default function TransferForm({
           ))}
         </select>
       </label>
-      <button disabled={busy || !targets.length}>
-        {busy ? "Transferring…" : "Confirm transfer"}
-      </button>
+      <IconAction
+        icon="transfer"
+        label={busy ? "Transferring…" : "Confirm transfer"}
+        type="submit"
+        disabled={busy || !targets.length}
+      />
       {failure && (
         <div role="alert" className={styles.transferError}>
           <strong>{failure.heading}</strong>

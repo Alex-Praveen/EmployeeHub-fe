@@ -1,4 +1,6 @@
 "use client";
+import { apiRequest } from "@/data/apiRequest";
+import PageHeader from "@/components/actions/PageHeader";
 import IconAction from "@/components/actions/IconAction";
 import { useEffect, useState, type FormEvent } from "react";
 import RecordDialog from "@/components/records/RecordDialog";
@@ -27,7 +29,7 @@ export default function Page() {
   useEffect(() => {
     const controller = new AbortController();
     async function readPeople() {
-      const r = await fetch("/api/employees/search", {
+      const r = await apiRequest("/api/employees/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: "{}",
@@ -81,26 +83,20 @@ export default function Page() {
   const current = result?.query === query ? result : null;
   return (
     <section className={styles.page}>
-      <header>
-        <div>
-          <h1>Leave requests</h1>
-          <p>Review and manage employee leave.</p>
-        </div>
+      <PageHeader title="Leave requests" subtitle="Review and manage employee leave.">
         <IconAction
           icon="add"
           label="New request"
-          showLabel
           disabled={!people.some((p) => p.employmentStatus !== "TERMINATED")}
           onClick={() => setEditor({ action: "create" })}
         />
-      </header>
+      </PageHeader>
       {lookupError && (
         <p role="alert">
           {lookupError}{" "}
           <IconAction
             icon="reset"
             label="Retry"
-            showLabel
             onClick={() => {
               setLookupError("");
               retryLookups((value) => value + 1);
@@ -173,7 +169,7 @@ export default function Page() {
             )),
           )}
           <div className={styles.actions}>
-            <IconAction type="submit" icon="search" label="Search" showLabel />
+            <IconAction type="submit" icon="search" label="Search" />
             <IconAction type="reset" icon="reset" label="Reset filters" />
           </div>
         </form>
@@ -184,12 +180,7 @@ export default function Page() {
       ) : current.error ? (
         <p role="alert">
           {current.error}{" "}
-          <IconAction
-            icon="reset"
-            label="Retry"
-            showLabel
-            onClick={() => setQuery({ ...query })}
-          />
+          <IconAction icon="reset" label="Retry" onClick={() => setQuery({ ...query })} />
         </p>
       ) : !current.rows.length ? (
         <p>No matching leave requests.</p>

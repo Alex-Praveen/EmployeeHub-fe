@@ -1,3 +1,5 @@
+import { apiRequest } from "@/data/apiRequest";
+import IconAction from "@/components/actions/IconAction";
 import { useEffect, useState } from "react";
 import TransferForm from "./TransferForm";
 import TeamRoster from "@/components/team/TeamRoster";
@@ -14,7 +16,7 @@ export default function DepartmentTeam({ departmentId }: { departmentId: string 
   useEffect(() => {
     const controller = new AbortController();
     async function readTeam() {
-      const response = await fetch(
+      const response = await apiRequest(
         "/api/departments/employees/" + encodeURIComponent(departmentId),
         {
           signal: controller.signal,
@@ -36,14 +38,14 @@ export default function DepartmentTeam({ departmentId }: { departmentId: string 
     return (
       <p role="alert">
         Team members could not be loaded.{" "}
-        <button
+        <IconAction
+          icon="reset"
+          label="Retry"
           onClick={() => {
             setError(false);
             setAttempt(attempt + 1);
           }}
-        >
-          Retry
-        </button>
+        />
       </p>
     );
   if (!members) return <p role="status">Loading team members…</p>;
@@ -53,9 +55,12 @@ export default function DepartmentTeam({ departmentId }: { departmentId: string 
       {members.length ? (
         <>
           <TeamRoster members={members} />
-          <button aria-expanded={transfer} onClick={() => setTransfer(!transfer)}>
-            {transfer ? "Close transfer form" : "Transfer employee"}
-          </button>
+          <IconAction
+            icon="transfer"
+            label={transfer ? "Close transfer form" : "Transfer employee"}
+            aria-expanded={transfer}
+            onClick={() => setTransfer(!transfer)}
+          />
           {transfer && (
             <TransferForm
               members={members}

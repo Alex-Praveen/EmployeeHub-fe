@@ -1,4 +1,6 @@
 "use client";
+import { apiRequest } from "@/data/apiRequest";
+import PageHeader from "@/components/actions/PageHeader";
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/records/StatusBadge";
 import Records from "@/components/records/Records";
@@ -32,7 +34,7 @@ function Calendar({ today, onChange }: { today: string; onChange: () => void }) 
   useEffect(() => {
     const controller = new AbortController();
     async function read() {
-      const response = await fetch("/api/attendance/search", {
+      const response = await apiRequest("/api/attendance/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ startDate: month + "-01", endDate: month + "-" + days }),
@@ -57,155 +59,165 @@ function Calendar({ today, onChange }: { today: string; onChange: () => void }) 
   const marked = new Set(current?.rows.map((row) => row.attendanceDate));
   const entries = current?.rows.filter((row) => row.attendanceDate === day) ?? [];
   return (
-    <div className={styles.layout}>
-      <section className={styles.panel} aria-label="Attendance calendar">
-        <header>
-          <h2>{first.toLocaleDateString("en-GB", { month: "long", year: "numeric" })}</h2>
-          <button onClick={() => select(today)}>Today</button>
-        </header>
-        <div className={styles.controls}>
-          <button onClick={() => move(-1)} aria-label="Previous month">
-            &larr;
-          </button>
-          <input
-            aria-label="Jump to date"
-            type="date"
-            value={day}
-            onChange={(e) => {
-              if (e.target.value && e.target.validity.valid) select(e.target.value);
+    <>
+      {" "}
+      <PageHeader title="Attendance" subtitle="Select a date to view the daily register.">
+        <IconAction
+          disabled={!current || current.failed}
+          icon="group"
+          label="Add group attendance"
+          onClick={() => setEditor({ action: "create-bulk" })}
+        />
+        <IconAction
+          disabled={!current || current.failed}
+          icon="add"
+          label="Add attendance"
+          onClick={() => setEditor({ action: "create" })}
+        />
+      </PageHeader>
+      <div className={styles.layout}>
+        <section className={styles.panel} aria-label="Attendance calendar">
+          <header>
+            <h2>
+              {first.toLocaleDateString("en-GB", { month: "long", year: "numeric" })}
+            </h2>
+            <IconAction icon="today" label="Today" onClick={() => select(today)} />
+          </header>
+          <div className={styles.controls}>
+            <IconAction
+              icon="back"
+              label="Previous month"
+              onClick={() => move(-1)}
+              aria-label="Previous month"
+            />
+            <input
+              aria-label="Jump to date"
+              type="date"
+              value={day}
+              onChange={(e) => {
+                if (e.target.value && e.target.validity.valid) select(e.target.value);
+              }}
+            />
+            <IconAction
+              icon="next"
+              label="Next month"
+              onClick={() => move(1)}
+              aria-label="Next month"
+            />
+          </div>
+          <div className={styles.grid}>
+            {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
+              <small key={d}>{d}</small>
+            ))}
+            {Array.from({ length: offset }, (_, i) => (
+              <span key={"blank" + i} />
+            ))}
+            {Array.from({ length: days }, (_, i) => {
+              const key = month + "-" + String(i + 1).padStart(2, "0");
+              return (
+                <button
+                  key={key}
+                  aria-label={key + (marked.has(key) ? " with attendance" : "")}
+                  aria-pressed={key === day}
+                  data-records={marked.has(key)}
+                  onClick={() => select(key)}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+        <section className={styles.panel} aria-live="polite">
+          <header>
+            <h2>
+              {new Date(day + "T12:00:00").toLocaleDateString("en-GB", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
+            </h2>
+            {current && !current.failed && <small>{entries.length} records</small>}
+          </header>
+
+          {notice && <p role="status">{notice}</p>}
+          {!current ? (
+            <p>Loading attendance…</p>
+          ) : current.failed ? (
+            <p role="alert">
+              Attendance could not be loaded.{" "}
+              <IconAction icon="reset" label="Retry" onClick={() => retry(attempt + 1)} />
+            </p>
+          ) : !entries.length ? (
+            <p>No attendance recorded for this date.</p>
+          ) : (
+            <div className={styles.scroll}>
+              <table>
+                <thead>
+                  <tr>
+                    {[
+                      "Employee",
+                      "Job title",
+                      "Check-in",
+                      "Check-out",
+                      "Status",
+                      "Actions",
+                    ].map((h) => (
+                      <th key={h} scope="col">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((row) => (
+                    <tr key={row.attendanceId}>
+                      <th scope="row">
+                        {row.employee.firstName} {row.employee.lastName}
+                      </th>
+                      <td>{row.employee.jobTitle?.titleName || "Unassigned"}</td>
+                      <td>{row.checkIn?.slice(0, 5) ?? "—"}</td>
+                      <td>{row.checkOut?.slice(0, 5) ?? "—"}</td>
+                      <td>
+                        <StatusBadge value={row.status} />
+                      </td>
+                      <td>
+                        <div className={styles.actions}>
+                          <IconAction
+                            icon="edit"
+                            label={`Edit attendance for ${row.employee.firstName} ${row.employee.lastName}`}
+                            onClick={() => setEditor({ action: "update", record: row })}
+                          />
+                          <IconAction
+                            icon="delete"
+                            label={`Delete attendance for ${row.employee.firstName} ${row.employee.lastName}`}
+                            onClick={() => setEditor({ action: "delete", record: row })}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+        {editor && (
+          <AttendanceEditor
+            editor={editor}
+            entries={entries}
+            day={day}
+            onClose={() => setEditor(null)}
+            onSaved={(message) => {
+              setEditor(null);
+              setNotice(message);
+              retry((v) => v + 1);
+              onChange();
             }}
           />
-          <button onClick={() => move(1)} aria-label="Next month">
-            &rarr;
-          </button>
-        </div>
-        <div className={styles.grid}>
-          {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
-            <small key={d}>{d}</small>
-          ))}
-          {Array.from({ length: offset }, (_, i) => (
-            <span key={"blank" + i} />
-          ))}
-          {Array.from({ length: days }, (_, i) => {
-            const key = month + "-" + String(i + 1).padStart(2, "0");
-            return (
-              <button
-                key={key}
-                aria-label={key + (marked.has(key) ? " with attendance" : "")}
-                aria-pressed={key === day}
-                data-records={marked.has(key)}
-                onClick={() => select(key)}
-              >
-                {i + 1}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-      <section className={styles.panel} aria-live="polite">
-        <header>
-          <h2>
-            {new Date(day + "T12:00:00").toLocaleDateString("en-GB", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-            })}
-          </h2>
-          {current && !current.failed && <small>{entries.length} records</small>}
-        </header>
-        {current && !current.failed && (
-          <div className={styles.actions}>
-            <IconAction
-              icon="add"
-              label="Add attendance"
-              showLabel
-              onClick={() => setEditor({ action: "create" })}
-            />
-            <IconAction
-              icon="group"
-              label="Add group attendance"
-              showLabel
-              onClick={() => setEditor({ action: "create-bulk" })}
-            />
-          </div>
         )}
-        {notice && <p role="status">{notice}</p>}
-        {!current ? (
-          <p>Loading attendance…</p>
-        ) : current.failed ? (
-          <p role="alert">
-            Attendance could not be loaded.{" "}
-            <button onClick={() => retry(attempt + 1)}>Retry</button>
-          </p>
-        ) : !entries.length ? (
-          <p>No attendance recorded for this date.</p>
-        ) : (
-          <div className={styles.scroll}>
-            <table>
-              <thead>
-                <tr>
-                  {[
-                    "Employee",
-                    "Job title",
-                    "Check-in",
-                    "Check-out",
-                    "Status",
-                    "Actions",
-                  ].map((h) => (
-                    <th key={h} scope="col">
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((row) => (
-                  <tr key={row.attendanceId}>
-                    <th scope="row">
-                      {row.employee.firstName} {row.employee.lastName}
-                    </th>
-                    <td>{row.employee.jobTitle?.titleName || "Unassigned"}</td>
-                    <td>{row.checkIn?.slice(0, 5) ?? "—"}</td>
-                    <td>{row.checkOut?.slice(0, 5) ?? "—"}</td>
-                    <td>
-                      <StatusBadge value={row.status} />
-                    </td>
-                    <td>
-                      <div className={styles.actions}>
-                        <IconAction
-                          icon="edit"
-                          label={`Edit attendance for ${row.employee.firstName} ${row.employee.lastName}`}
-                          onClick={() => setEditor({ action: "update", record: row })}
-                        />
-                        <IconAction
-                          icon="delete"
-                          label={`Delete attendance for ${row.employee.firstName} ${row.employee.lastName}`}
-                          onClick={() => setEditor({ action: "delete", record: row })}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
-      {editor && (
-        <AttendanceEditor
-          editor={editor}
-          entries={entries}
-          day={day}
-          onClose={() => setEditor(null)}
-          onSaved={(message) => {
-            setEditor(null);
-            setNotice(message);
-            retry((v) => v + 1);
-            onChange();
-          }}
-        />
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 export default function Page() {
@@ -218,15 +230,16 @@ export default function Page() {
   }, []);
   return (
     <div className={styles.workspace}>
-      <div className={styles.hero}>
-        <h1>Attendance</h1>
-        <p>Select a date to view the daily register.</p>
-      </div>
       {today && <Calendar today={today} onChange={() => setRevision((v) => v + 1)} />}
-      <button aria-expanded={advanced} onClick={() => setAdvanced(!advanced)}>
-        Advanced attendance search
-      </button>
-      {advanced && <Records key={revision} area={areaForRoute("attendance")} />}
+      <IconAction
+        icon="search"
+        label="Advanced attendance search"
+        aria-expanded={advanced}
+        onClick={() => setAdvanced(!advanced)}
+      />
+      {advanced && (
+        <Records showHeader={false} key={revision} area={areaForRoute("attendance")} />
+      )}
     </div>
   );
 }

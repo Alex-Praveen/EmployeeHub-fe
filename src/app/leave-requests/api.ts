@@ -1,3 +1,4 @@
+import { apiRequest } from "@/data/apiRequest";
 import type { Row } from "@/components/records/RecordDialog";
 
 export type Leave = Row & {
@@ -34,7 +35,7 @@ export async function post(
   body: object,
   signal?: AbortSignal,
 ) {
-  const response = await fetch("/api/leave-requests/" + action, {
+  const response = await apiRequest("/api/leave-requests/" + action, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

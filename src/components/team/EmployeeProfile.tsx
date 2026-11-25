@@ -1,3 +1,4 @@
+import IconAction from "@/components/actions/IconAction";
 import { useEffect, useRef } from "react";
 import dialogStyles from "@/components/records/RecordDialog.module.css";
 import styles from "./team.module.css";
@@ -67,9 +68,13 @@ export default function EmployeeProfile({
             <h2 id="employee-name">{employeeName(member)}</h2>
             <span>{member.jobTitle?.titleName || "Role unassigned"}</span>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close employee profile">
-            &times;
-          </button>
+          <IconAction
+            icon="close"
+            label="Close employee profile"
+            type="button"
+            onClick={onClose}
+            aria-label="Close employee profile"
+          />
         </header>
         <dl className={styles.profile}>
           {member.projectRole && (

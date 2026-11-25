@@ -1,3 +1,4 @@
+import { apiRequest } from "@/data/apiRequest";
 import { typeOfField, type Operation } from "@/app/workspace";
 
 export async function fetchRecords(
@@ -13,7 +14,7 @@ export async function fetchRecords(
     pairs.map(([k, v]) => [k, typeOfField(k) === "number" ? Number(v) : v.trim()]),
   );
   const json = operation.method && !operation.query;
-  const response = await fetch(
+  const response = await apiRequest(
     "/api/" + path + (operation.query ? "?" + new URLSearchParams(pairs) : ""),
     {
       method: operation.method || "GET",
